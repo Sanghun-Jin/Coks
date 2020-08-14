@@ -16,7 +16,7 @@ import * as Location from "expo-location";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Bottomtabnavigator from "./Navigator/Bottom-tab-navigator";
+import Bottomtabnavigator from "./Navigator/Bottom-tab_Navigator";
 import Chatting from "./Chat/Chat";
 import SettingScreen from "./SettingScreen";
 

@@ -1,5 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import MyDrawer from "../Drawer";
 import FriendList from "../Friends/FriendList";
 import FriendInfo from "../Friends/FriendInfo";
 
@@ -11,6 +13,7 @@ function Friends_Navigator() {
         name="Friends"
         component={FriendList}
         options={{
+          headerLeft: () => <MyDrawer />,
           headerTitle: "친구",
         }}
       />

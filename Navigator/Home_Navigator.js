@@ -1,8 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Switch } from "react-native";
+
+import MyDrawer from "../Drawer";
 import HomeScreen from "../Home/Home";
 import SetLocationScreen from "../Home/SetLocationInfo";
-import { Switch, TouchableOpacity, Image } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,6 +20,7 @@ function Home_Navigator() {
         name="Home"
         component={HomeScreen}
         options={{
+          headerLeft: () => <MyDrawer />,
           headerRight: () => (
             <Switch
               style={{ marginRight: 20 }}
@@ -28,14 +31,6 @@ function Home_Navigator() {
               }
               value={isEditting}
             />
-          ),
-          headerLeft: () => (
-            <TouchableOpacity style={{ marginLeft: 20 }}>
-              <Image
-                source={require("../assets/Image/Icon/More.png")}
-                style={{ width: 50, height: 50 }}
-              />
-            </TouchableOpacity>
           ),
         }}
       />
