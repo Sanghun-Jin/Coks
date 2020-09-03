@@ -14,11 +14,11 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import Bottomtabnavigator from "./Navigator/Bottom-tab_Navigator";
-import Chatting from "./Chat/Chat";
-import SettingScreen from "./SettingScreen";
+import Settingnavigor from "./Navigator/Setting_Navigator";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,19 +43,14 @@ function App() {
 
   useEffect(() => getLocation());
 
-  const Root = createStackNavigator();
+  const Drawer = createDrawerNavigator();
 
   return (
     <NavigationContainer>
-      <Root.Navigator initialRouteName="Home">
-        <Root.Screen
-          name="Home"
-          component={Bottomtabnavigator}
-          options={{ headerShown: false }}
-        />
-        <Root.Screen name="Settings" component={SettingScreen} />
-        <Root.Screen name="Chatting" component={Chatting} />
-      </Root.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={Bottomtabnavigator} />
+        <Drawer.Screen name="Setting" component={Settingnavigor} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

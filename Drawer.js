@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Image } from "react-native";
 
-export default function MyDrawer({ navigation }) {
+export default function MyDrawer() {
   return (
     <TouchableOpacity style={{ marginLeft: 20 }}>
       <Image

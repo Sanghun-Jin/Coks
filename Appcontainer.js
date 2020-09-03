@@ -8,6 +8,7 @@ const initialState = {
   msg: [],
   markers: [],
   isEditting: false,
+  isLowBattery: false,
   current_location: {
     latitude: 37.258450608156714,
     longitude: 127.03119222074746,
@@ -29,10 +30,15 @@ const reducer = (state = initialState, action) => {
           },
         ],
       };
-    case "switching":
+    case "switchingEdit":
       return {
         ...state,
         isEditting: !state.isEditting,
+      };
+    case "switchingBatteryMode":
+      return {
+        ...state,
+        isLowBattery: !state.isLowBattery,
       };
     case "changeLocation":
       return {

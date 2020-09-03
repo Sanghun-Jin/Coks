@@ -26,7 +26,7 @@ function Home_Navigator() {
               style={{ marginRight: 20 }}
               onValueChange={() =>
                 dispatch({
-                  type: "switching",
+                  type: "switchingEdit",
                 })
               }
               value={isEditting}

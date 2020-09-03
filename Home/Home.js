@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   },
   Map: {
     flex: 1,
+    marginHorizontal: 10,
   },
   marker: {
     width: 50,
