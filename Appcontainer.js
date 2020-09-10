@@ -1,6 +1,7 @@
 import { registerRootComponent } from "expo";
 import { createStore } from "redux";
-import { Provider } from "react-redux";
+import { Provider as PaperProvider } from "react-native-paper";
+import { Provider as StoreProvider } from "react-redux";
 import React from "react";
 import App from "./App";
 
@@ -71,9 +72,11 @@ const store = createStore(reducer);
 
 function AppContainer() {
   return (
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <StoreProvider store={store}>
+      <PaperProvider>
+        <App />
+      </PaperProvider>
+    </StoreProvider>
   );
 }
 

@@ -13,15 +13,16 @@ expo-location
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as Location from "expo-location";
-import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import Icon from "react-native-vector-icons/Ionicons";
 
-import Bottomtabnavigator from "./Navigator/Bottom-tab_Navigator";
-import Settingnavigor from "./Navigator/Setting_Navigator";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import Auth_Navigator from "./Navigator/Auth_Navigator";
+import Drawer_Navigator from "./Navigator/Drawer_Navigator";
 
 function App() {
   const dispatch = useDispatch();
+
   getLocation = async () => {
     try {
       await Location.requestPermissionsAsync();
@@ -41,16 +42,18 @@ function App() {
     }
   };
 
-  useEffect(() => getLocation());
+  //useEffect(() => getLocation());
 
-  const Drawer = createDrawerNavigator();
-
+  const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={Bottomtabnavigator} />
-        <Drawer.Screen name="Setting" component={Settingnavigor} />
-      </Drawer.Navigator>
+      <Stack.Navigator
+        initialRouteName="Auth"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Auth" component={Auth_Navigator} />
+        <Stack.Screen name="Drawer" component={Drawer_Navigator} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

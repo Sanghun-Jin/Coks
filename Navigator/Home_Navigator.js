@@ -2,14 +2,13 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Switch } from "react-native";
 
-import MyDrawer from "../Drawer";
 import HomeScreen from "../Home/Home";
 import SetLocationScreen from "../Home/SetLocationInfo";
 
 import { useDispatch, useSelector } from "react-redux";
 
 const Stack = createStackNavigator();
-function Home_Navigator() {
+export default function Home_Navigator() {
   const dispatch = useDispatch();
   const { isEditting } = useSelector((state) => ({
     isEditting: state.isEditting,
@@ -20,7 +19,6 @@ function Home_Navigator() {
         name="Home"
         component={HomeScreen}
         options={{
-          headerLeft: () => <MyDrawer />,
           headerRight: () => (
             <Switch
               style={{ marginRight: 20 }}
@@ -44,5 +42,3 @@ function Home_Navigator() {
     </Stack.Navigator>
   );
 }
-
-export default Home_Navigator;

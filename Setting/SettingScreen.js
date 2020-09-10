@@ -24,29 +24,33 @@ function SettingScreen({ navigation }) {
           <Text style={styles.text}>친구관리</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={
-          (styles.SetList,
-          {
+      <View style={styles.SetList}>
+        <View
+          style={{
             flexDirection: "row",
             alignItems: "center",
-          })
-        }
-      >
-        <Text style={(styles.text, { flex: 5 })}>저전력모드</Text>
-        <Switch
-          style={{ flex: 1 }}
-          onValueChange={() =>
-            dispatch({
-              type: "switchingBatteryMode",
-            })
-          }
-          value={isLowBattery}
-        />
+          }}
+        >
+          <Text style={styles.text}>저전력모드</Text>
+          <Switch
+            style={{ flex: 1 }}
+            onValueChange={() =>
+              dispatch({
+                type: "switchingBatteryMode",
+              })
+            }
+            value={isLowBattery}
+          />
+        </View>
       </View>
       <View style={styles.SetList}>
         <TouchableOpacity>
-          <Text style={styles.Logout}>로그아웃</Text>
+          <Text
+            style={styles.Logout}
+            onPress={() => navigation.navigate("Auth")}
+          >
+            로그아웃
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}></View>
@@ -59,10 +63,13 @@ export default SettingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 10,
     justifyContent: "center",
   },
-  SetList: {},
+  SetList: {
+    paddingVertical: 20,
+    borderBottomColor: "#bbb",
+    borderBottomWidth: 1,
+  },
   text: {
     textAlign: "center",
     fontSize: 17,
