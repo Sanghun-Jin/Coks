@@ -3,13 +3,12 @@ import { View, StyleSheet, Image, StatusBar, Text } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector, useDispatch } from "react-redux";
 import * as Location from "expo-location";
-
 /*
 Location.startLocationUpdatesAsync(taskName, options)
 Location.stopLocationUpdatesAsync(taskName)
 */
 export default function Home({ navigation }) {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const { markers } = useSelector((state) => ({
     markers: state.markers,
   }));

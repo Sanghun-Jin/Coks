@@ -2,36 +2,30 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 // import axios from "axios";
+import Firebase from "../FirebaseSvc";
+
+const firebase = new Firebase();
 
 export default function Login({ navigation }) {
   const [users, setUsers] = useState({
-    name: "",
+    ID: "",
     password: "",
   });
-
-  // 서버 통신부분 사용하지 X
-  // const OnfindUser = async () => {
-  //   await axios
-  //     .post("http://192.168.144.12:5000/login", {
-  //       name: users.name,
-  //       password: users.password,
-  //     })
-  //     .then((res) => alert(res.data));
-  // };
 
   return (
     <>
       <View style={styles.container}>
         <TextInput
           style={styles.margin}
-          label="UserName"
+          label="Email"
           mode="outlined"
-          value={users.name}
+          value={users.ID}
+          keyboardType="email-address"
           returnKeyType={"next"}
           onChangeText={(text) =>
             setUsers({
               ...users,
-              name: text,
+              ID: text,
             })
           }
           onSubmitEditing={() => {
@@ -44,6 +38,7 @@ export default function Login({ navigation }) {
           mode="outlined"
           returnKeyType={"done"}
           value={users.password}
+          secureTextEntry={true}
           onChangeText={(text) =>
             setUsers({
               ...users,
@@ -58,7 +53,9 @@ export default function Login({ navigation }) {
           style={styles.margin}
           icon="key"
           mode="contained"
-          onPress={() => navigation.navigate("Drawer")}
+          onPress={() =>
+            firebase.LogInAccount(navigation, users.ID, users.password)
+          }
         >
           Login
         </Button>

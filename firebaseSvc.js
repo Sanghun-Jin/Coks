@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { DrawerLayoutAndroidBase } from "react-native";
 
 const Config = {
   apiKey: "AIzaSyBv65DnBNccas_8VimaHDvOjb_xAscuVr8",
@@ -17,44 +18,51 @@ export default class FirebaseSvc {
       console.log("firebase apps already running...");
     }
   }
-
-  Emailverify = async ({ users }) => {
+  CreateAccount = async (navigation, users) => {
     firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const currentUser = {
-          id: userCredential.user.uid,
-          email: email,
-          name: users.userName,
-          phone: users.phone,
-          emailVerified: userCredential.user.emailVerified,
-        };
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(currentUser.id)
-          .set({
-            name: currentUser.name,
-            email: currentUser.email,
-            phone: currentUser.phone,
-          })
-          .then(function () {
-            console.log("firestore()DB, 유저 추가성공");
-          })
-          .catch(() => {
-            console.log("firestore()DB추가 실패", error);
-          });
-      })
+      .createUserWithEmailAndPassword(users.email, users.password)
       .then(() => {
-        let user = firebase.auth().currentUser;
-
-        user
-          .sendEmailVerification()
-          .then(function () {
-            console.log("이메일 전송");
-          })
-          .catch("Email not sent!");
+        firebase.auth().currentUser.sendEmailVerification();
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            alert("이미 사용중인 이메일 입니다.");
+            break;
+          case "auth/invalid-email":
+            alert("유효하지 않은 메일입니다");
+            break;
+        }
       });
+  };
+
+  LogInAccount = (navigation, email, password) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        if (this.VerifyEmail()) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Drawer" }],
+          });
+        } else {
+          alert("이메일 인증을 해주세요");
+        }
+      })
+      .catch(() => {
+        alert("아이디 또는 비밀번호가 잘못되었습니다.");
+      });
+  };
+
+  LogOutAccount = () => {
+    firebase.auth().signOut();
+  };
+
+  VerifyEmail = () => {
+    const user = firebase.auth().currentUser;
+    if (user != null) return firebase.auth().currentUser.emailVerified;
   };
 }

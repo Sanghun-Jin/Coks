@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  ScrollView,
   Switch,
   View,
   Text,
@@ -10,6 +9,10 @@ import {
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
+
+import Firebase from "../FirebaseSvc";
+
+const firebase = new Firebase();
 
 function SettingScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -47,7 +50,13 @@ function SettingScreen({ navigation }) {
         <TouchableOpacity>
           <Text
             style={styles.Logout}
-            onPress={() => navigation.navigate("Auth")}
+            onPress={() => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Auth" }],
+              });
+              firebase.LogOutAccount();
+            }}
           >
             로그아웃
           </Text>

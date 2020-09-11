@@ -10,9 +10,9 @@ import {
   Paragraph,
 } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
-import FirebaseSvc from "../firebaseSvc";
+import Firebase from "../FirebaseSvc";
 
-const firebase = new FirebaseSvc();
+const firebase = new Firebase();
 
 export default function Register({ navigation }) {
   let openImagePickerAsync = async () => {
@@ -88,8 +88,7 @@ export default function Register({ navigation }) {
       alert("전화번호를 입력해주세요. (-제외)");
       return;
     }
-    firebase.Emailverify(users);
-    navigation.navigate("Login");
+    firebase.CreateAccount(navigation, users);
   };
 
   return (

@@ -6,7 +6,6 @@ import React from "react";
 import App from "./App";
 
 const initialState = {
-  msg: [],
   markers: [],
   isEditting: false,
   isLowBattery: false,
@@ -48,18 +47,6 @@ const reducer = (state = initialState, action) => {
           latitude: action.latitude,
           longitude: action.longitude,
         },
-      };
-    case "Update":
-      return {
-        ...state,
-        msg: [
-          ...state.msg,
-          {
-            name: action.name,
-            message: action.message,
-            createAt: action.date,
-          },
-        ],
       };
     default:
       return {
