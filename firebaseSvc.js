@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import { DrawerLayoutAndroidBase } from "react-native";
+import "firebase/firestore";
 
 const Config = {
   apiKey: "AIzaSyBv65DnBNccas_8VimaHDvOjb_xAscuVr8",
@@ -64,5 +64,23 @@ export default class FirebaseSvc {
   VerifyEmail = () => {
     const user = firebase.auth().currentUser;
     if (user != null) return firebase.auth().currentUser.emailVerified;
+  };
+
+  FireStoreRead = () => {
+    const fs = firebase.firestore();
+    fs.collection("UserInfo")
+      .doc("Friends")
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          alert(JSON.stringify(doc.data()));
+        } else {
+          alert("No data");
+        }
+      });
+  };
+  FireStoreWrite = () => {
+    const fs = firebase.firestore();
+    fs.collection("UserInfo").add({ name: "asd", PhoneNum: "012312" });
   };
 }
