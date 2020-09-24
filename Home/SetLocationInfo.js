@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Button, ScrollView, TextInput } from "react-native";
-import { useDispatch } from "react-redux";
+import Firebase from "../FirebaseSvc";
+
+const FirebaseSvc = new Firebase.FirebaseSvc();
 
 export default function SetLocationinfo({ navigation, route }) {
-  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [share, setShare] = useState("");
   const lati = route.params.coordinate[0];
   const long = route.params.coordinate[1];
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -58,12 +58,9 @@ export default function SetLocationinfo({ navigation, route }) {
       <Button
         title="완료"
         onPress={() => {
-          dispatch({
-            type: "markerAdd",
-            title: title,
-            desc: desc,
-            share: share,
-            coordinate: { lati, long },
+          FirebaseSvc.UserMarkAdd(title, desc, share, {
+            latitude: lati,
+            longitude: long,
           });
           navigation.navigate("Home");
         }}

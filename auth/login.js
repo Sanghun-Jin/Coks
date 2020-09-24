@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-// import axios from "axios";
+
 import Firebase from "../FirebaseSvc";
 
-const firebase = new Firebase();
+const FirebaseSvc = new Firebase.FirebaseSvc();
 
 export default function Login({ navigation }) {
   const [users, setUsers] = useState({
-    ID: "",
-    password: "",
+    ID: "sanghun1425@naver.com",
+    password: "tkdgns1@",
   });
 
   return (
@@ -54,7 +54,7 @@ export default function Login({ navigation }) {
           icon="key"
           mode="contained"
           onPress={() =>
-            firebase.LogInAccount(navigation, users.ID, users.password)
+            FirebaseSvc.LogInAccount(navigation, users.ID, users.password)
           }
         >
           Login

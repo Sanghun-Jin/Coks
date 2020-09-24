@@ -12,7 +12,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Firebase from "../FirebaseSvc";
 
-const firebase = new Firebase();
+const FirebaseSvc = new Firebase.FirebaseSvc();
 
 export default function Register({ navigation }) {
   let openImagePickerAsync = async () => {
@@ -88,7 +88,7 @@ export default function Register({ navigation }) {
       alert("전화번호를 입력해주세요. (-제외)");
       return;
     }
-    firebase.CreateAccount(navigation, users);
+    FirebaseSvc.CreateAccount(navigation, users);
   };
 
   return (

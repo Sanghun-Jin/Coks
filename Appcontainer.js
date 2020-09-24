@@ -6,30 +6,12 @@ import React from "react";
 import App from "./App";
 
 const initialState = {
-  markers: [],
   isEditting: false,
   isLowBattery: false,
-  current_location: {
-    latitude: 37.258450608156714,
-    longitude: 127.03119222074746,
-  },
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "markerAdd":
-      return {
-        ...state,
-        markers: [
-          ...state.markers,
-          {
-            title: action.title,
-            description: action.desc,
-            shareFriends: action.share,
-            coordinate: action.coordinate,
-          },
-        ],
-      };
     case "switchingEdit":
       return {
         ...state,
@@ -39,14 +21,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLowBattery: !state.isLowBattery,
-      };
-    case "changeLocation":
-      return {
-        ...state,
-        current_location: {
-          latitude: action.latitude,
-          longitude: action.longitude,
-        },
       };
     default:
       return {

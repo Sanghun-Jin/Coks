@@ -1,33 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, StatusBar, Text } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import * as Location from "expo-location";
-/*
-Location.startLocationUpdatesAsync(taskName, options)
-Location.stopLocationUpdatesAsync(taskName)
-*/
+import Firebase from "../FirebaseSvc";
+
+const DB = Firebase.DB;
+const FirebaseSvc = new Firebase.FirebaseSvc();
 export default function Home({ navigation }) {
-  //const dispatch = useDispatch();
-  const { markers } = useSelector((state) => ({
-    markers: state.markers,
+  const { isLowBattery } = useSelector((state) => ({
+    isLowBattery: state.isLowBattery,
   }));
+
   const { isEditting } = useSelector((state) => ({
     isEditting: state.isEditting,
   }));
-  const { current_location } = useSelector((state) => ({
-    current_location: state.current_location,
-  }));
 
-  // Location.watchPositionAsync(() => {
-  // 	const { latitude, longitude } = Location.getCurrentPositionAsync();
-  // 	dispatch({
-  // 		type: 'changeLocation',
-  // 		latitude: latitude,
-  // 		longitude: longitude,
-  // 	});
-  // });
+  const [Current_Location, setCurrent_Location] = useState({});
 
+  StartWatchLocation = () => {
+    Location.watchPositionAsync(
+      {
+        timeInterval: 10000,
+        distanceInterval: 10,
+        mayShowUserSettingsDialog: isLowBattery,
+      },
+      (position) => {
+        //FirebaseSvc.UserLocationData(position);
+      }
+    );
+  };
+
+  ReadCurrentLocation = () => {
+    DB.database()
+      .ref("UsersLocation/" + DB.auth().currentUser.uid + "/position/coords")
+      .once("value", function (snapshot) {
+        const position = snapshot.val();
+        setCurrent_Location({
+          latitude: position.latitude,
+          longitude: position.longitude,
+        });
+      });
+  };
+
+  useEffect(() => {
+    StartWatchLocation();
+    ReadCurrentLocation();
+  });
   return (
     <View style={styles.container}>
       <StatusBar barStyle={"dark-content"} />
@@ -35,8 +54,8 @@ export default function Home({ navigation }) {
         <MapView
           style={styles.Map}
           initialRegion={{
-            latitude: current_location.latitude,
-            longitude: current_location.longitude,
+            latitude: Current_Location.latitude,
+            longitude: Current_Location.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
@@ -54,8 +73,8 @@ export default function Home({ navigation }) {
         >
           <Marker
             coordinate={{
-              latitude: current_location.latitude,
-              longitude: current_location.longitude,
+              latitude: Current_Location.latitude,
+              longitude: Current_Location.longitude,
             }}
           >
             <View style={styles.marker}>
@@ -68,7 +87,7 @@ export default function Home({ navigation }) {
               <Text style={styles.nametext}>나</Text>
             </View>
           </Marker>
-          {markers.map((marker) => {
+          {/* {markers.map((marker) => {
             return (
               <Marker
                 coordinate={{
@@ -86,7 +105,7 @@ export default function Home({ navigation }) {
                 </View>
               </Marker>
             );
-          })}
+          })} */}
         </MapView>
       </View>
     </View>

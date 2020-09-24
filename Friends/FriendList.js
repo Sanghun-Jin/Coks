@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, StatusBar, Button } from "react-native";
 
 import Firebase from "../FirebaseSvc";
 
-const firebase = new Firebase();
+const DB = Firebase.DB;
 
 export default function FriendsList({ navigation }) {
+  const [Data, setData] = useState({});
   return (
     <View style={styles.container}>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.Content}>
-        <Button title="Press" onPress={() => firebase.FireStoreWrite()} />
+        <Button title="Press" />
       </View>
     </View>
   );

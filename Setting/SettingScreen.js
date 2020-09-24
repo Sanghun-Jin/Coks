@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Firebase from "../FirebaseSvc";
 
-const firebase = new Firebase();
+const FirebaseSvc = new Firebase.FirebaseSvc();
 
 function SettingScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ function SettingScreen({ navigation }) {
                 index: 0,
                 routes: [{ name: "Auth" }],
               });
-              firebase.LogOutAccount();
+              FirebaseSvc.LogOutAccount();
             }}
           >
             로그아웃
