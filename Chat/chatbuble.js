@@ -28,59 +28,72 @@ class MessageBubble extends React.Component {
           this.props.mine ? styles.mine : styles.not_mine,
         ]}
       >
-        <View
-          style={[
-            styles.cloud,
-            {
-              backgroundColor: this.props.mine ? "#007aff" : "#dddddd",
-            },
-          ]}
-        >
-          {this.props.image ? (
-            <Image
-              style={{ alignSelf: this.props.mine ? "flex-end" : "flex-start" }}
-              borderRadius={10}
-              source={this.props.image}
-            />
-          ) : null}
-          {this.props.text ? (
-            <Text
+        <View style={styles.img_wrap}>
+          <Image
+            style={this.props.mine ? styles.imgx : styles.img}
+            source={require("./asdd.jpg")}
+          ></Image>
+          <View>
+            <Text style={styles.name}>{this.props.name}</Text>
+            <View
               style={[
-                styles.text,
+                styles.cloud,
                 {
-                  color: this.props.mine ? "white" : "black",
+                  backgroundColor: this.props.mine ? "#007aff" : "#dddddd",
                 },
               ]}
             >
-              {this.props.text}
-            </Text>
-          ) : null}
-          <View
-            style={[
-              styles.arrow_container,
-              this.props.mine
-                ? styles.arrow_right_container
-                : styles.arrow_left_container,
-            ]}
-          >
-            <Svg
-              style={this.props.mine ? styles.arrow_right : styles.arrow_left}
-              width={moderateScale(15.5, 0.6)}
-              height={moderateScale(17.5, 0.6)}
-              viewBox="32.484 17.5 15.515 17.5"
-              enable-background="new 32.485 17.5 15.515 17.5"
-            >
-              <Path
-                d={
+              {this.props.image ? (
+                <Image
+                  style={{
+                    alignSelf: this.props.mine ? "flex-end" : "flex-start",
+                  }}
+                  borderRadius={10}
+                  source={this.props.image}
+                />
+              ) : null}
+              {this.props.text ? (
+                <Text
+                  style={[
+                    styles.text,
+                    {
+                      color: this.props.mine ? "white" : "black",
+                    },
+                  ]}
+                >
+                  {this.props.text}
+                </Text>
+              ) : null}
+              <View
+                style={[
+                  styles.arrow_container,
                   this.props.mine
-                    ? "M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z"
-                    : "M38.484,17.5c0,8.75,1,13.5-6,17.5C51.484,35,52.484,17.5,38.484,17.5z"
-                }
-                fill={this.props.mine ? "#007AFF" : "#dddddd"}
-                x="0"
-                y="0"
-              />
-            </Svg>
+                    ? styles.arrow_right_container
+                    : styles.arrow_left_container,
+                ]}
+              >
+                <Svg
+                  style={
+                    this.props.mine ? styles.arrow_right : styles.arrow_left
+                  }
+                  width={moderateScale(15.5, 0.6)}
+                  height={moderateScale(17.5, 0.6)}
+                  viewBox="32.484 17.5 15.515 17.5"
+                  enable-background="new 32.485 17.5 15.515 17.5"
+                >
+                  <Path
+                    d={
+                      this.props.mine
+                        ? "M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z"
+                        : "M38.484,17.5c0,8.75,1,13.5-6,17.5C51.484,35,52.484,17.5,38.484,17.5z"
+                    }
+                    fill={this.props.mine ? "#007AFF" : "#dddddd"}
+                    x="0"
+                    y="0"
+                  />
+                </Svg>
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -91,6 +104,25 @@ class MessageBubble extends React.Component {
 export default MessageBubble;
 
 const styles = StyleSheet.create({
+  img_wrap: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  img: {
+    marginTop: 18,
+    marginRight: 10,
+    marginBottom: 0,
+  },
+  imgx: {
+    display: "none",
+  },
+  name: {
+    color: "#646464",
+    marginLeft: 10,
+    marginBottom: 3,
+    fontSize: 15,
+    flexDirection: "row",
+  },
   message: {
     flexDirection: "row",
     marginVertical: moderateScale(7, 2),

@@ -13,47 +13,61 @@ import {
 } from "react-native";
 import MessageBubble from "./chatbuble";
 import { useDispatch, useSelector } from "react-redux";
-
-const io = require("socket.io-client");
-
-const SocketEndpoint = "https://server0501.herokuapp.com/";
-
-const { width } = Dimensions.get("window");
-
-const socket = io(SocketEndpoint, {
-  transports: ["websocket"],
-});
-
+import { navigation } from "@react-navigation/native";
+const { width, height } = Dimensions.get("window");
 let LastDate = 1;
 
-export default function chat({ navigation }) {
+import firebase from "firebase";
+require("firebase/database");
+
+var config = {
+  apiKey: "AIzaSyBv65DnBNccas_8VimaHDvOjb_xAscuVr8",
+  authDomain: "coks-project.firebaseapp.com",
+  databaseURL: "https://coks-project.firebaseio.com",
+  projectId: "coks-project",
+  storageBucket: "coks-project.appspot.com",
+  messagingSenderId: "142458364491",
+  appId: "1:142458364491:web:ff8ad45c31be08c8d3e3ce",
+  measurementId: "G-4J3DKKHR4H",
+};
+
+firebase.initializeApp(config);
+
+export default function chat({ navigation, route }) {
+  const todaydate = Date.now();
   const dispatch = useDispatch();
+  var name = "asd";
   const [text, setText] = useState("");
-  const { msg } = useSelector((state) => ({
-    msg: state.msg,
-  }));
-  socketUpdate();
+  var msg = new Array();
+  var room_name = route.params.name;
+  load();
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="default" barStyle="dark-content" />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : null}
         style={styles.Board}
+        keyboardVerticalOffset={Platform.select({
+          ios: 85,
+          Android: 520,
+        })}
+        behavior={Platform.OS === "ios" ? "padding" : null}
       >
-        <ScrollView
-          ref={(scroll) => {
-            this.scroll = scroll;
-          }}
-        >
-          {msg.map((message) => {
-            return message.name == "익명" ? (
-              <MessageBubble mine text={message.message} />
-            ) : (
-              <MessageBubble text={message.message} />
-            );
-          })}
-        </ScrollView>
-
+        <View style={styles.chat}>
+          <ScrollView
+            style={{ flex: 1 }}
+            ref={(scroll) => {
+              this.scroll = scroll;
+            }}
+          >
+            {msg.map((message) => {
+              return message.name == name ? (
+                <MessageBubble mine text={message.text} />
+              ) : (
+                <MessageBubble text={message.text} name={message.name} />
+              );
+            })}
+          </ScrollView>
+        </View>
         <View style={styles.Keyboard}>
           <TextInput
             autoFocus={true}
@@ -74,23 +88,27 @@ export default function chat({ navigation }) {
       </KeyboardAvoidingView>
     </View>
   );
-
+  function load() {
+    firebase
+      .database()
+      .ref("message/" + room_name)
+      .on("child_added", function (value) {
+        var { name, text } = value.val();
+        var messages = {
+          name,
+          text,
+        };
+        msg.push(messages);
+      });
+    scrolldown();
+  }
   function send() {
-    if (text !== "") {
-      socket.emit("send", {
-        name: "상대",
-        message: text,
-        date: Date.now(),
-      });
-      dispatch({
-        type: "Update",
-        name: "익명",
-        message: text,
-        date: Date.now(),
-      });
-      setText("");
-      scrolldown();
-    }
+    firebase
+      .database()
+      .ref("message/" + room_name)
+      .push({ name: name, text: text });
+    setText("");
+    scrolldown();
   }
 
   function scrolldown() {
@@ -98,42 +116,34 @@ export default function chat({ navigation }) {
       scroll.scrollToEnd({ animated: true });
     }, 100);
   }
-
-  function socketUpdate() {
-    socket.on("update", (data) => {
-      if (LastDate != data.date) {
-        dispatch({
-          type: "Update",
-          name: data.name,
-          message: data.message,
-          date: data.date,
-        });
-        LastDate = data.date;
-      }
-    });
-    scrolldown();
-  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1DDB16",
+    backgroundColor: "#8080ff",
     alignItems: "center",
     justifyContent: "center",
+    padding: 10,
     // marginTop: getStatusBarHeight(true) + 4,
   },
 
   Board: {
     flex: 1,
     width: width - 50,
-    marginVertical: 20,
+    height: height - 120,
     backgroundColor: "white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
 
+  chat: {
+    flex: 10,
+    paddingTop: 20,
+  },
+
   Keyboard: {
+    flex: 1,
     flexDirection: "row",
     padding: 5,
   },
